@@ -24,13 +24,22 @@ public class UrlCheckController {
         try {
             URL urlObj = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            int responseCodeCategory = conn.getResponseCode() / 100;
+            if(responseCodeCategory !=2 && responseCodeCategory !=3){
+                returnMessage = SITE_DOWN;
+                System.out.println(responseCodeCategory);
+                System.out.println(returnMessage);
+            } else{
+                returnMessage = SITE_UP;
+                System.out.println(returnMessage);
+            }
         } catch (MalformedURLException e) {
             returnMessage = INCORRECT_URL;
         } catch (IOException e) {
             returnMessage = SITE_DOWN;
         }
-
-
         return returnMessage;
     }
     
